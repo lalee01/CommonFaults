@@ -1,6 +1,6 @@
 import { Container } from '@mui/system'
 import Menu from '@src/components/pages/menu'
-import List from '@src/components/pages/list'
+import ModelList from '@src/components/pages/modellist'
 import Page404 from './components/pages/page404';
 import Providers from '@src/providers';
 import ManufacturerList from './components/pages/manufacturerlist';
@@ -20,7 +20,8 @@ function App() {
       <Menu />
       <Container maxWidth="lg">
         <Routes>
-          <Route path="/" element={<List />} />
+          <Route path="/" element={<ManufacturerList />} />
+          <Route path="/manufacturer/:manufacturer" element={<ModelList />} />
           <Route path='*' element={<Page404 />} />
         </Routes>
       </Container>

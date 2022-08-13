@@ -1,4 +1,4 @@
-import { Grid , CardActions , Card , Typography , Button , CardContent } from '@mui/material'
+import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery , gql} from '@apollo/client';
@@ -12,7 +12,7 @@ type DataType = {
     postid:String
 }
 
-const List = () => {
+const ModelList = () => {
 
     const GET_POST = gql`
     query GetPost($manufacturer: String) {
@@ -34,7 +34,7 @@ const List = () => {
 
     const navigate = useNavigate()
     
-    if (loading) return <div>Loading...</div>
+    if (loading) return <LinearProgress/>
     if (error) return <div>{`Error! ${error.message}`}</div>;
     
     
@@ -71,4 +71,4 @@ const List = () => {
     );
 }
 
-export default List;
+export default ModelList;
