@@ -22,6 +22,6 @@ const ManufacturerList = () => {
                 </Grid>     
             )}
         </Grid>
-        )
+    )
 }
 export default ManufacturerList

@@ -37,35 +37,26 @@ const ModelList = () => {
     if (loading) return <LinearProgress/>
     if (error) return <div>{`Error! ${error.message}`}</div>;
     
-    
     return (
         <Grid container spacing={2}>
+            <Grid item xs={12} >
+                <Typography variant="h6" component="div">
+                    {manufacturer}
+                </Typography>
+            </Grid>
             {data && data?.posts?.map((post:DataType)=>{
-                console.log(post)
-                return(
-                    <Grid item xs={12} md={4}>
-                        <Card elevation={4} >
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                Gyártó: {post.manufacturer}
+                <Grid item xs={12} md={4}>
+                    <Card elevation={4}>
+                        <CardContent 
+                            onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${post.model}`)}} 
+                            sx={{ p:2, '&:last-child': { pb: 0 }}}>
+                                <Typography textAlign="center" gutterBottom variant="h3" component="div">
+                                    {post.model}
                                 </Typography>
-                                <Typography variant="h5" color="text.secondary">
-                                Modell: {post.model}
-                                </Typography>
-                            </CardContent>
-                            <CardActions >
-                                <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <Button variant="contained" fullWidth id={`${post.postid}`}  onClick={() => {navigate(`/manufacturer/${post.manufacturer}`)}}>Tovább...</Button>
-                                    </Grid>
-                                    <Grid item xs={6} textAlign="center" >
-                                        <Button variant="contained" color="error" fullWidth ><DeleteIcon /> </Button>
-                                    </Grid>
-                                </Grid>
-                            </CardActions>
-                        </Card>
-                    </Grid>     
-                )}
+                        </CardContent>
+                    </Card>
+                </Grid>     
+                }
             )}
         </Grid>
     );

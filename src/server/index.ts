@@ -33,15 +33,18 @@ const typeDefs = gql`
     }
 
     type Query {
-        posts(manufacturer:String): [Post]
+        posts(manufacturer:String , model:String): [Post]
     }
-`;
+  `
 
 const resolvers = {
   Query: {
     posts: async (_:null,args:any) => await knex('post').select().modify((queryBuilder) => {
       if (args.manufacturer) {
-          queryBuilder.where('post.manufacturer',args.manufacturer);
+          queryBuilder.where('post.manufacturer',args.manufacturer)
+      }
+      if (args.model) {
+        queryBuilder.where('post.model',args.model)
       }
     })  
   }
