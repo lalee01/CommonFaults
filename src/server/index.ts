@@ -2,10 +2,18 @@ import express from "express";
 import { ApolloServer, gql } from "apollo-server-express"
 import Knex from 'knex'
 import "dotenv/config";
+import {uid} from 'uid'
 
 interface KnexConfig {
   [key: string]: object;
 };
+
+type AddPostValues = {
+  manufacturer:String
+  model:String
+  title:String
+  description:String
+}
 
 const knexConfig: KnexConfig = {
   local: {
@@ -30,12 +38,19 @@ const typeDefs = gql`
         description: String
         postid:String
         manufacturer:String
+        message:String
     }
 
     type Query {
-        posts(manufacturer:String , model:String): [Post]
+        posts(manufacturer:String , model:String ): [Post]
+    }
+
+    type Mutation {
+        teszt(title:String , manufacturer:String , model:String , description:String): [Post]
     }
   `
+
+    const message = "Sikeres"
 
 const resolvers = {
   Query: {
@@ -46,7 +61,10 @@ const resolvers = {
       if (args.model) {
         queryBuilder.where('post.model',args.model)
       }
-    })  
+    }) 
+  },
+  Mutation: {
+    teszt: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)})
   }
 };
 

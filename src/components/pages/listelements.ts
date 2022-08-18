@@ -1,4 +1,8 @@
-export type ListProps = {
-    manu:String
-    model:String
-  }
+export type PostElement = {
+  id:Number
+  model:String
+  manufacturer:String
+  title:String
+  description:String
+  postid:String
+}

@@ -13,7 +13,7 @@ const ManufacturerList = () => {
                     <Card elevation={4}>
                         <CardContent 
                             onClick={() => {navigate(`/manufacturer/${manufacturer}`)}} 
-                            sx={{ p:2, '&:last-child': { pb: 0 }}}>
+                            sx={{ cursor:'pointer',p:2, '&:last-child': { pb: 0 }}}>
                                 <Typography textAlign="center" gutterBottom variant="h3" component="div">
                                     {manufacturer}
                                 </Typography>

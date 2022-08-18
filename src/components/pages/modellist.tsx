@@ -1,16 +1,8 @@
-import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress } from '@mui/material'
+import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress , Alert } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery , gql} from '@apollo/client';
-
-type DataType = {
-    id:Number
-    model:String
-    manufacturer:String
-    title:String
-    description:String
-    postid:String
-}
+import { PostElement } from '@src/components/pages/listelements'
 
 const ModelList = () => {
 
@@ -20,9 +12,6 @@ const ModelList = () => {
             id
             model
             manufacturer
-            title
-            description
-            postid
         }
     }
     `
@@ -35,28 +24,28 @@ const ModelList = () => {
     const navigate = useNavigate()
     
     if (loading) return <LinearProgress/>
-    if (error) return <div>{`Error! ${error.message}`}</div>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>;
+
     
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
-                <Typography variant="h6" component="div">
+                <Typography variant="h3" component="div">
                     {manufacturer}
                 </Typography>
             </Grid>
-            {data && data?.posts?.map((post:DataType)=>{
+            {data && data?.posts?.map((post:PostElement)=>
                 <Grid item xs={12} md={4}>
                     <Card elevation={4}>
                         <CardContent 
                             onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${post.model}`)}} 
-                            sx={{ p:2, '&:last-child': { pb: 0 }}}>
+                            sx={{ cursor:'pointer', p:2, '&:last-child': { pb: 0 }}}>
                                 <Typography textAlign="center" gutterBottom variant="h3" component="div">
                                     {post.model}
                                 </Typography>
                         </CardContent>
                     </Card>
                 </Grid>     
-                }
             )}
         </Grid>
     );

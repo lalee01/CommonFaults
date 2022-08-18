@@ -7,11 +7,7 @@ import ManufacturerList from './components/pages/manufacturerlist';
 import PostList from './components/pages/postlist';
 import '@src/App.css'
 import { Route, Routes } from 'react-router-dom';
-
-type MappedElement = {
-  manufacturer:String
-  model:String
-}
+import Post from '@src/components/pages/post';
 
 const App = () => {
 
@@ -23,6 +19,7 @@ const App = () => {
           <Route path="/" element={<ManufacturerList />} />
           <Route path="/manufacturer/:manufacturer" element={<ModelList />} />
           <Route path="/manufacturer/:manufacturer/model/:model" element={<PostList />} />
+          <Route path="/manufacturer/:manufacturer/model/:model/postid/:postid" element={<Post />} />
           <Route path='*' element={<Page404 />} />
         </Routes>
       </Container>

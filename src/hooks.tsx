@@ -1,6 +1,6 @@
 import { useQuery , gql} from '@apollo/client';
 
-export function useList () {
+export const useList = () => {
 
     const GET_POST = gql`
     query GetPost {
