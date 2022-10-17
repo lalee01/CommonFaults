@@ -39,10 +39,10 @@ const Post = () => {
                 <Grid item xs={12} >
                     <Paper elevation={2}>
                         <Typography variant="h6" component="div">
-                            Cím: {item.title}
+                            Title: {item.title}
                         </Typography>
                         <Typography variant="h6" component="div">
-                            Rövid leírás: {item.description}
+                            Description: {item.description}
                         </Typography>
                     </Paper>
                 </Grid>

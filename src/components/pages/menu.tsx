@@ -10,13 +10,13 @@ function Menu() {
         <AppBar position="fixed">
             <Toolbar>
                 <Button color="inherit" onClick={() => {navigate('/')}}>
-                    Kezdőlap
+                    Home
                 </Button>            
                 <Typography variant="h1" component="div" sx={{ flexGrow: 1 }} />
                 <Typography variant="h1" component="div" sx={{ flexGrow: 1 }} />
-                <Button color="inherit">Belépés</Button>
-                <Button color="inherit">Regisztráció</Button>
-                <Button color="inherit">Kilépés</Button>
+                <Button color="inherit">Login</Button>
+                <Button color="inherit">Regisztration</Button>
+                <Button color="inherit">Logout</Button>
             </Toolbar>
         </AppBar>
     </Box>

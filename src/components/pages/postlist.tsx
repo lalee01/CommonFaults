@@ -19,8 +19,9 @@ const PostList = () => {
         }
     }
     `
-    const { manufacturer = '' ,model = '' } = useParams()
+    const { manufacturer = '' , model = ''} = useParams()
 
+    console.log(manufacturer , model)
     const { loading, error, data } = useQuery(GET_POST ,{
         variables:{ manufacturer , model }
     });
@@ -38,19 +39,19 @@ const PostList = () => {
                     {manufacturer} {model}
                 </Typography>
             </Grid>
-            <AddPost selectedManufacturer={manufacturer} selectedModel={model}/>
+            <AddPost manufacturer={manufacturer} model={model}/>
             {data && data?.posts?.map((item:PostElement)=>
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                     <Paper elevation={2} sx={{cursor:'pointer',pb:1}} onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${model}/postid/${item.postid}`)}}>
                         <Grid container spacing={1} sx={{pr:1 , pl:1}}>
                             <Grid item xs={12} md={6} >
                                 <Typography variant="h6" component="div">
-                                    Cím: {item.title}
+                                    Title: {item.title}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} md={3}>
                                 <Typography variant="h6" component="div">
-                                Rövid leírás: {item.description}
+                                Description: {item.description}
                                 </Typography>
                             </Grid> 
                         </Grid>

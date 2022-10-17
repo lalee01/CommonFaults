@@ -21,7 +21,7 @@ const knexConfig: KnexConfig = {
       connection: {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
-        password: process.env.DB_PASS,
+        password: process.env.DB_PASS, 
         database: process.env.DB_DATABASE
       }
   }
@@ -38,19 +38,18 @@ const typeDefs = gql`
         description: String
         postid:String
         manufacturer:String
-        message:String
     }
 
     type Query {
         posts(manufacturer:String , model:String ): [Post]
+        getModels(manufacturer:String): [Post]
     }
 
     type Mutation {
-        teszt(title:String , manufacturer:String , model:String , description:String): [Post]
+        addPost(title:String , manufacturer:String , model:String , description:String): [Post]
+        addModel(manufacturer:String , model:String): [Post]
     }
   `
-
-    const message = "Sikeres"
 
 const resolvers = {
   Query: {
@@ -61,14 +60,17 @@ const resolvers = {
       if (args.model) {
         queryBuilder.where('post.model',args.model)
       }
-    }) 
+    }),
+    getModels: async (_:null,args:any) => await knex('models').select().where('manufacturer', args.manufacturer)
   },
   Mutation: {
-    teszt: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)})
+    addPost: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)}),
+    addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args)
   }
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
+
 server.start().then(()=> {
     const PORT = 3004;
     const app = express();
@@ -78,4 +80,3 @@ server.start().then(()=> {
       console.log(`Server running on port ${PORT}`);
     });
 })
-

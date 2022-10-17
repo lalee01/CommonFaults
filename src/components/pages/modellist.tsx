@@ -3,21 +3,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery , gql} from '@apollo/client';
 import { PostElement } from '@src/components/pages/listelements'
+import AddModel from '@src/components/pages/addmodel';
+
+type Props = {
+    manufacturer: string
+}
 
 const ModelList = () => {
 
-    const GET_POST = gql`
-    query GetPost($manufacturer: String) {
-        posts (manufacturer: $manufacturer) {
+    const GET_MODELS = gql`
+    query GetModels($manufacturer: String) {
+        getModels (manufacturer: $manufacturer) {
             id
             model
-            manufacturer
         }
     }
     `
     const { manufacturer = '' } = useParams()
 
-    const { loading, error, data } = useQuery(GET_POST ,{
+    const { loading, error, data } = useQuery(GET_MODELS ,{
         variables:{ manufacturer }
     });
 
@@ -26,7 +30,6 @@ const ModelList = () => {
     if (loading) return <LinearProgress/>
     if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>;
 
-    
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
@@ -34,8 +37,8 @@ const ModelList = () => {
                     {manufacturer}
                 </Typography>
             </Grid>
-            {data && data?.posts?.map((post:PostElement)=>
-                <Grid item xs={12} md={4}>
+            {data && data?.getModels?.map((post:PostElement , index : number)=>
+                <Grid item xs={12} md={4} key={index}>
                     <Card elevation={4}>
                         <CardContent 
                             onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${post.model}`)}} 
@@ -47,6 +50,9 @@ const ModelList = () => {
                     </Card>
                 </Grid>     
             )}
+            <Grid item xs={12} md={4}>
+            <AddModel manufacturer={manufacturer}/>
+            </Grid>
         </Grid>
     );
 }
