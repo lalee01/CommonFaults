@@ -32,7 +32,6 @@ const ADD_POST = gql`
 
 const AddPost = ({ manufacturer , model}:Props) => {
 
-
     const [submitPost, { data, loading, error }] = useMutation(ADD_POST , {
         refetchQueries: [
             {query: GET_POST}, 

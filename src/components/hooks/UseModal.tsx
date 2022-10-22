@@ -6,14 +6,20 @@ type ProviderProps = {
     children: ReactNode
 }
 
-const ModalContext = React.createContext();
-ModalContext.displayName = 'ModalContext';
+type ModalProps = {
+    currentModal: string
+    modalProps : any
+    showModal :void
+}
 
 export const MODALS = {
     'NONE': 'NONE',
     'LOGIN': 'LOGIN',
     'REG': 'REG',
 };
+
+const ModalContext = React.createContext({currentModal : "" , modalProps : undefined ?? {}});
+ModalContext.displayName = 'ModalContext';
 
 export function Modals() {
     return (
@@ -35,10 +41,10 @@ export function Modals() {
 }
 
 export function ModalContextProvider({children}:ProviderProps) {
-    const [currentModal, setCurrentModal] = useState(false);
+    const [currentModal, setCurrentModal] = useState("");
     const [modalProps, setModalProps] = useState({});
     const showModal = useCallback(
-        (newModal, newModalProps = {}) => {
+        (newModal :any, newModalProps = {}) => {
             setModalProps(newModalProps);
             setCurrentModal(newModal);
         },
