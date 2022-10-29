@@ -21,7 +21,6 @@ const PostList = () => {
     `
     const { manufacturer = '' , model = ''} = useParams()
 
-    console.log(manufacturer , model)
     const { loading, error, data } = useQuery(GET_POST ,{
         variables:{ manufacturer , model }
     });
