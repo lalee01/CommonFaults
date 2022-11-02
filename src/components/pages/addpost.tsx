@@ -2,7 +2,6 @@ import { Formik , Field , Form } from 'formik'
 import { Card , Button , Grid , CardContent } from '@mui/material'
 import { TextField } from 'formik-mui'
 import { useMutation , gql } from '@apollo/client';
-import { PostElement } from '@src/components/pages/listelements'
 
 type Props = {
     manufacturer: string

@@ -1,7 +1,6 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery , gql} from '@apollo/client';
-import { Button, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Breadcrumbs, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { PostElement } from '@src/components/pages/listelements'
 import AddPost from './addpost';
 
@@ -29,14 +28,21 @@ const PostList = () => {
     
     if (loading) return <LinearProgress/>
     if (error) return <div>{`Error! ${error.message}`}</div>;
-    
-    
+
     return (
         <Grid container spacing={2} sx={{mt:1}}>
             <Grid item xs={12} >
-                <Typography variant="h3" component="div">
-                    {manufacturer} {model}
-                </Typography>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/`)}}>
+                        Home
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}`)}}>
+                        {manufacturer}
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${model}`)}}>
+                        {model}
+                    </Link>
+                </Breadcrumbs>
             </Grid>
             <AddPost manufacturer={manufacturer} model={model}/>
             {data && data?.posts?.map((item:PostElement)=>

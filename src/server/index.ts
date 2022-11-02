@@ -22,6 +22,7 @@ type AddPostValues = {
   model:String
   title:String
   description:String
+  postid:String
 }
 
 const knexConfig: KnexConfig = {
@@ -60,11 +61,13 @@ const typeDefs = gql`
         posts(manufacturer:String , model:String ): [Post]
         getModels(manufacturer:String): [Post]
         login(username:String , password:String):[login]
+        post(postid:String):[Post]
     }
 
     type Mutation {
         addPost(title:String , manufacturer:String , model:String , description:String): [Post]
         addModel(manufacturer:String , model:String): [Post]
+        editPost(title:String , description:String , postid:String):[Post]
     }
   `
 
@@ -78,6 +81,7 @@ const resolvers = {
         queryBuilder.where('post.model',args.model)
       }
     }),
+    post: async (_:null,args:any) => await knex('post').select().where('postid', args.postid),
     getModels: async (_:null,args:any) => await knex('models').select().where('manufacturer', args.manufacturer),
     login: async (_:null , args:any) => {
 
@@ -103,7 +107,8 @@ const resolvers = {
   },
   Mutation: {
     addPost: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)}),
-    addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args)
+    addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args),
+    editPost: async (_:any , args:AddPostValues)=> await knex('post').where('postid',args.postid).update(args)
   }
 };
 

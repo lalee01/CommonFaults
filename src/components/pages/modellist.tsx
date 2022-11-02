@@ -1,4 +1,4 @@
-import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress , Alert } from '@mui/material'
+import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress , Alert, Breadcrumbs, Link } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery , gql} from '@apollo/client';
@@ -33,9 +33,14 @@ const ModelList = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
-                <Typography variant="h3" component="div">
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/`)}}>
+                    Home
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}`)}}>
                     {manufacturer}
-                </Typography>
+                    </Link>
+                </Breadcrumbs>
             </Grid>
             {data && data?.getModels?.map((post:PostElement , index : number)=>
                 <Grid item xs={12} md={4} key={index}>
