@@ -3,30 +3,57 @@ import {Form, Formik, Field} from "formik";
 import {TextField} from 'formik-mui'
 import { useMutation , gql } from '@apollo/client';
 
+type ModalProps = {
+    title:string
+    description:string
+    postid: string
+    isItOpen : boolean
+    setIsItOpen: (isItOpen:boolean)=>boolean
+}
+
+const GET_POST = gql`
+    query Post($postid: String) {
+        post (postid: $postid) {
+            title
+            description
+            postid
+        }
+    }
+`
+
 const EDIT_POST = gql`
     mutation EditPost($title:String , $description:String , $postid:String) {
         editPost (title:$title , description:$description , postid:$postid) {
+            postid
             title
             description
         }
     }
 `;
 
-export default function EditModal({onClose , title , description , postid}) {
+const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalProps)=> {
 
-    const [submitPost, { data, loading, error }] = useMutation(EDIT_POST)
+    const [editPost, { data, loading, error }] = useMutation(EDIT_POST, {
+        refetchQueries: [
+            {query: GET_POST}, 
+            'Post'  
+        ]
+    })
+    
+    const onClose = () =>setIsItOpen(false)
 
     return (
-        <Dialog open={true} onClose={onClose}>
-            <DialogTitle>Registration</DialogTitle>
+        <Dialog open={isItOpen} onClose={onClose} >
+            <DialogTitle>Edit post</DialogTitle>
             <DialogContent>
                 <Formik initialValues={{title:title , description:description}}
                     onSubmit={async (value, {setFieldError, setSubmitting}) => {
                         setSubmitting(true);
                         const editedValue = {...value , postid:postid}
-                        await submitPost({ variables: editedValue })
-                        setSubmitting(loading);
-                        setFieldError('title', error?.message);
+                        await editPost({ variables: editedValue })
+                        setFieldError('description' , error?.message)
+                        setSubmitting(loading)
+                        onClose()
                     }}>
                     <Form>
                         <Grid container spacing={2} sx={{mt:1}}>
@@ -46,3 +73,4 @@ export default function EditModal({onClose , title , description , postid}) {
         </Dialog>
     )
 }
+export default EditModal

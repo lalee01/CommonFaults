@@ -25,6 +25,12 @@ type AddPostValues = {
   postid:String
 }
 
+type EditPost = {
+  title : String
+  description : String
+  postid : String
+}
+
 const knexConfig: KnexConfig = {
   local: {
     client: 'mysql',
@@ -57,6 +63,12 @@ const typeDefs = gql`
       id: Int
     }
 
+    type EditPost {
+      title : String
+      description : String
+      postid : String
+    }
+
     type Query {
         posts(manufacturer:String , model:String ): [Post]
         getModels(manufacturer:String): [Post]
@@ -67,7 +79,7 @@ const typeDefs = gql`
     type Mutation {
         addPost(title:String , manufacturer:String , model:String , description:String): [Post]
         addModel(manufacturer:String , model:String): [Post]
-        editPost(title:String , description:String , postid:String):[Post]
+        editPost(title:String , description:String , postid:String):[EditPost]
     }
   `
 
@@ -108,7 +120,9 @@ const resolvers = {
   Mutation: {
     addPost: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)}),
     addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args),
-    editPost: async (_:any , args:AddPostValues)=> await knex('post').where('postid',args.postid).update(args)
+    editPost: async (_ :any , args:EditPost)=> {
+      await knex('post').where('postid',args.postid).update(args) 
+    }
   }
 };
 

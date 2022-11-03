@@ -5,10 +5,6 @@ import { useQuery , gql} from '@apollo/client';
 import { PostElement } from '@src/components/pages/listelements'
 import AddModel from '@src/components/pages/addmodel';
 
-type Props = {
-    manufacturer: string
-}
-
 const ModelList = () => {
 
     const GET_MODELS = gql`
