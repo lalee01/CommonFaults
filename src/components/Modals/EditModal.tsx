@@ -1,7 +1,9 @@
-import {Dialog, DialogContent, DialogTitle, Grid , Button} from "@mui/material";
-import {Form, Formik, Field} from "formik";
-import {TextField} from 'formik-mui'
-import { useMutation , gql } from '@apollo/client';
+import { Dialog, DialogContent, DialogTitle, Grid , Button } from "@mui/material";
+import { Form, Formik, Field } from "formik";
+import { TextField } from 'formik-mui'
+import { useMutation } from '@apollo/client';
+import { EDIT_POST } from "../apollo/mutations";
+import { GET_POST } from "../apollo/querys";
 
 type ModalProps = {
     title:string
@@ -10,26 +12,6 @@ type ModalProps = {
     isItOpen : boolean
     setIsItOpen: (isItOpen:boolean)=>boolean
 }
-
-const GET_POST = gql`
-    query Post($postid: String) {
-        post (postid: $postid) {
-            title
-            description
-            postid
-        }
-    }
-`
-
-const EDIT_POST = gql`
-    mutation EditPost($title:String , $description:String , $postid:String) {
-        editPost (title:$title , description:$description , postid:$postid) {
-            postid
-            title
-            description
-        }
-    }
-`;
 
 const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalProps)=> {
 

@@ -23,12 +23,19 @@ type AddPostValues = {
   title:String
   description:String
   postid:String
+  author:String
 }
 
 type EditPost = {
   title : String
   description : String
   postid : String
+}
+
+type registrate = {
+  username:String
+  password:String
+  rePassword:String
 }
 
 const knexConfig: KnexConfig = {
@@ -54,6 +61,7 @@ const typeDefs = gql`
         description: String
         postid:String
         manufacturer:String
+        author:String
     }
 
     type login {
@@ -61,6 +69,12 @@ const typeDefs = gql`
       username: String 
       password: String
       id: Int
+    }
+
+    type Registrate {
+      username:String
+      password:String
+      rePassword:String
     }
 
     type EditPost {
@@ -77,9 +91,11 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addPost(title:String , manufacturer:String , model:String , description:String): [Post]
+        addPost(title:String , manufacturer:String , model:String , description:String , author:String): [Post]
         addModel(manufacturer:String , model:String): [Post]
         editPost(title:String , description:String , postid:String):[EditPost]
+        deletePost(postid:String):[Post]
+        reg(username:String,password:String,rePassword:String):[Registrate]
     }
   `
 
@@ -122,8 +138,19 @@ const resolvers = {
     addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args),
     editPost: async (_ :any , args:EditPost)=> {
       await knex('post').where('postid',args.postid).update(args) 
-    }
-  }
+    },
+    deletePost: async (_ :any , args:{postid:String})=> await knex('post').where('postid',args.postid).del(),
+    reg:async (_ :any , args:registrate)=> {
+      const hash = bcrypt.hashSync(args.password, saltRounds)
+
+      const regData = {
+        username:args.username,
+        password:hash
+      }
+
+      console.log(args)
+     await knex('users').insert(regData)
+    }} 
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });

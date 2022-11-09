@@ -1,20 +1,12 @@
-import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress , Alert, Breadcrumbs, Link } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Grid , Card , Typography , CardContent, LinearProgress , Alert, Breadcrumbs, Link } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery , gql} from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { PostElement } from '@src/components/pages/listelements'
 import AddModel from '@src/components/pages/addmodel';
+import { GET_MODELS } from '../apollo/querys';
 
 const ModelList = () => {
 
-    const GET_MODELS = gql`
-    query GetModels($manufacturer: String) {
-        getModels (manufacturer: $manufacturer) {
-            id
-            model
-        }
-    }
-    `
     const { manufacturer = '' } = useParams()
 
     const { loading, error, data } = useQuery(GET_MODELS ,{
@@ -24,7 +16,7 @@ const ModelList = () => {
     const navigate = useNavigate()
     
     if (loading) return <LinearProgress/>
-    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
 
     return (
         <Grid container spacing={2}>

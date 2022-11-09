@@ -1,23 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery , gql} from '@apollo/client';
-import { Breadcrumbs, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
+import { useQuery } from '@apollo/client';
+import { Alert, Breadcrumbs, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { PostElement } from '@src/components/pages/listelements'
 import AddPost from './addpost';
+import { GET_POST } from '../apollo/querys';
 
 const PostList = () => {
 
-    const GET_POST = gql`
-    query GetPost($manufacturer: String , $model:String) {
-        posts (manufacturer: $manufacturer , model: $model) {
-            id
-            model
-            manufacturer
-            title
-            description
-            postid
-        }
-    }
-    `
     const { manufacturer = '' , model = ''} = useParams()
 
     const { loading, error, data } = useQuery(GET_POST ,{
@@ -27,7 +16,7 @@ const PostList = () => {
     const navigate = useNavigate()
     
     if (loading) return <LinearProgress/>
-    if (error) return <div>{`Error! ${error.message}`}</div>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
 
     return (
         <Grid container spacing={2} sx={{mt:1}}>

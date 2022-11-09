@@ -1,36 +1,34 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import EditModal from '../Modals/EditModal';
-import { useQuery , gql} from '@apollo/client';
-import { Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
+import { useQuery , useMutation } from '@apollo/client';
+import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
-
-export const GET_POST = gql`
-    query Post($postid: String) {
-        post (postid: $postid) {
-            id
-            model
-            manufacturer
-            title
-            description
-            postid
-        }
-    }
-`
+import { ONE_POST } from '../apollo/querys';
+import { DEL_POST } from '../apollo/mutations';
 
 const Post = () => {
-
 
     const { manufacturer = '' ,model = '' , postid= ''} = useParams()
     const navigate = useNavigate()
 
     const [isItOpen , setIsItOpen] = useState(false)
 
-    const { loading, error, data } = useQuery(GET_POST ,{
+    const { loading, error, data } = useQuery(ONE_POST ,{
         variables:{ postid }
     });
     
     if (loading) return <LinearProgress/>
-    if (error) return <h3>{`Error! ${error.message}`}</h3>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
+    
+    const deletePost = () =>{
+        const [delPost, {}] = useMutation(DEL_POST, {
+            onCompleted:()=>{
+                console.log("Post deleted:" , postid)
+                navigate(-1)
+            }
+        })
+        delPost({variables : {postid:postid}})
+    }
     
     return (
         <Grid container spacing={2} sx={{mt:1}}>
@@ -58,7 +56,8 @@ const Post = () => {
                     <Typography variant="h6" component="div">
                         Description: {data.post[0].description}
                     </Typography>
-                    <Button color='info' size='medium' variant='contained' onClick={()=>{setIsItOpen(true)}}>Edit</Button>
+                    <Button color='info' size='medium' variant='contained' onClick={()=>setIsItOpen(true)}>Edit</Button>
+                    <Button color='error' size='medium' variant='contained' onClick={()=>deletePost()}>Delete</Button>
                 </Paper>
             </Grid>
             <EditModal title={data.post[0].title} description={data.post[0].description}  postid={postid} isItOpen={isItOpen} setIsItOpen={setIsItOpen} />

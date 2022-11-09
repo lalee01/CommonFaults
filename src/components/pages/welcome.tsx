@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react";
-import {Typography} from "@mui/material"
+import { Typography } from "@mui/material"
 
 function Welcome() {
 

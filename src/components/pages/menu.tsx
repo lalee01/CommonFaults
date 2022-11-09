@@ -1,6 +1,6 @@
 import { Button , Box , Typography , Toolbar , AppBar } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
-import {MODALS , useModals} from './../hooks/UseModal'
+import { MODALS , useModals } from './../hooks/UseModal'
 
 function Menu() {
 

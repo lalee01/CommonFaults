@@ -1,18 +1,9 @@
-import { gql, useLazyQuery} from "@apollo/client";
-import {Dialog, DialogContent, DialogTitle, Grid , Button} from "@mui/material";
-import {Form, Formik, Field} from "formik";
-import {TextField} from 'formik-mui'
+import { useLazyQuery } from "@apollo/client";
+import { Dialog, DialogContent, DialogTitle, Grid , Button } from "@mui/material";
+import { Form, Formik, Field } from "formik";
+import { TextField } from 'formik-mui'
 import { useNavigate } from "react-router-dom";
-
-const LOGIN = gql`
-    query login($username: String , $password:String) {
-        login (username: $username , password: $password) {
-            username
-            id
-            token
-        }
-    }
-`
+import { LOGIN } from "../apollo/querys";
 
 export default function LoginModal({onClose} : {onClose: () => void}) {
     
@@ -22,6 +13,7 @@ export default function LoginModal({onClose} : {onClose: () => void}) {
             if(data.login[0].id !== 0){
                 console.log(data.login[0])
                 localStorage.setItem('token' , data.login[0].token)
+                localStorage.setItem('username' , data.login[0].username)
                 navigate('/home')
                 onClose()
             }

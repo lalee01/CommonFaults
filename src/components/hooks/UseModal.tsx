@@ -1,4 +1,4 @@
-import React, {ReactNode, useCallback, useContext, useState} from 'react';
+import React, { ReactNode, useCallback, useContext, useState } from 'react';
 import EditModal from '../Modals/EditModal';
 import LoginModal from "../Modals/LoginModal";
 import RegModal from "../Modals/RegModal";
