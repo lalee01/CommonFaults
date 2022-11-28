@@ -1,10 +1,28 @@
-import { ApolloClient, InMemoryCache, ApolloProvider , useQuery , gql} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from '@apollo/client';
 import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ModalContextProvider} from './components/hooks/UseModal'
+import { setContext } from '@apollo/client/link/context'
+
+
+const httpLink = createHttpLink({
+    uri: 'http://localhost:3002/graphql',
+    credentials: 'same-origin'
+  });
+  
+  const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('token');
+
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : "",
+      }
+    }
+  });
 
 const client = new ApolloClient({
-    uri: 'http://localhost:3004/graphql',
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
 })
 
