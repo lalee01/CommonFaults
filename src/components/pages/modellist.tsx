@@ -1,24 +1,12 @@
-import { Grid , CardActions , Card , Typography , Button , CardContent, LinearProgress , Alert } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Grid , Card , Typography , CardContent, LinearProgress , Alert, Breadcrumbs, Link } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery , gql} from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { PostElement } from '@src/components/pages/listelements'
 import AddModel from '@src/components/pages/addmodel';
-
-type Props = {
-    manufacturer: string
-}
+import { GET_MODELS } from '../apollo/querys';
 
 const ModelList = () => {
 
-    const GET_MODELS = gql`
-    query GetModels($manufacturer: String) {
-        getModels (manufacturer: $manufacturer) {
-            id
-            model
-        }
-    }
-    `
     const { manufacturer = '' } = useParams()
 
     const { loading, error, data } = useQuery(GET_MODELS ,{
@@ -28,14 +16,19 @@ const ModelList = () => {
     const navigate = useNavigate()
     
     if (loading) return <LinearProgress/>
-    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
-                <Typography variant="h3" component="div">
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/`)}}>
+                    Home
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}`)}}>
                     {manufacturer}
-                </Typography>
+                    </Link>
+                </Breadcrumbs>
             </Grid>
             {data && data?.getModels?.map((post:PostElement , index : number)=>
                 <Grid item xs={12} md={4} key={index}>

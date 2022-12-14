@@ -1,4 +1,5 @@
-import React, {ReactNode, useCallback, useContext, useState} from 'react';
+import React, { ReactNode, useCallback, useContext, useState } from 'react';
+import EditModal from '../Modals/EditModal';
 import LoginModal from "../Modals/LoginModal";
 import RegModal from "../Modals/RegModal";
 
@@ -6,19 +7,14 @@ type ProviderProps = {
     children: ReactNode
 }
 
-type ModalProps = {
-    currentModal: string
-    modalProps : any
-    showModal :void
-}
-
 export const MODALS = {
     'NONE': 'NONE',
     'LOGIN': 'LOGIN',
     'REG': 'REG',
+    'EDIT': 'EDIT',
 };
 
-const ModalContext = React.createContext({currentModal : "" , modalProps : undefined ?? {}});
+const ModalContext = React.createContext({currentModal: "", modalProps: {}, showModal: (input: string) => {},title:{}});
 ModalContext.displayName = 'ModalContext';
 
 export function Modals() {
@@ -31,6 +27,8 @@ export function Modals() {
                         return <LoginModal onClose={onClose} {...context.modalProps}/>;
                     case MODALS.REG:
                         return <RegModal onClose={onClose} {...context.modalProps}/>;
+                    case MODALS.EDIT:
+                        return <EditModal onClose={onClose} {...context.modalProps}/>;
                     case MODALS.NONE:
                     default:
                         return null;

@@ -1,29 +1,13 @@
 import { Grid , Card , CardActions , CardContent , Button } from "@mui/material";
 import { TextField } from "formik-mui"
 import { Formik , Field , Form} from "formik";
-import { useMutation , gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { ADD_MODEL } from "../apollo/mutations";
+import { GET_MODELS } from "../apollo/querys";
 
 type Props = {
     manufacturer: string
 }
-
-const GET_MODELS = gql`
-    query GetModels($manufacturer: String , $model:String) {
-        posts (manufacturer: $manufacturer , model: $model) {
-            id
-            model
-            manufacturer
-        }
-    }
-`
-
-const ADD_MODEL = gql`
-    mutation AddModel($manufacturer:String , $model:String) {
-        addModel (manufacturer:$manufacturer , model:$model) {
-            model
-        }
-    }
-`;
 
 function AddModel({manufacturer}:Props) {
 

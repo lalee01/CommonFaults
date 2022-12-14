@@ -1,52 +1,66 @@
-import { useParams } from 'react-router-dom';
-import { useQuery , gql} from '@apollo/client';
-import { Grid, LinearProgress, Paper, Typography } from '@mui/material';
-import { PostElement } from '@src/components/pages/listelements'
+import { useNavigate, useParams } from 'react-router-dom';
+import EditModal from '../Modals/EditModal';
+import { useQuery , useMutation } from '@apollo/client';
+import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ONE_POST } from '../apollo/querys';
+import { DEL_POST } from '../apollo/mutations';
 
 const Post = () => {
 
-    const GET_POST = gql`
-        query GetPost($manufacturer: String , $model:String) {
-            posts (manufacturer: $manufacturer , model: $model) {
-                id
-                model
-                manufacturer
-                title
-                description
-                postid
-            }
-        }
-    `
+    const { manufacturer = '' ,model = '' , postid= ''} = useParams()
+    const navigate = useNavigate()
 
-    const { manufacturer = '' ,model = '' } = useParams()
+    const [isItOpen , setIsItOpen] = useState(false)
 
-    const { loading, error, data } = useQuery(GET_POST ,{
-        variables:{ manufacturer , model }
+    const { loading, error, data } = useQuery(ONE_POST ,{
+        variables:{ postid }
     });
     
     if (loading) return <LinearProgress/>
-    if (error) return <h3>{`Error! ${error.message}`}</h3>;
+    if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
     
-    console.log(data)
+    const deletePost = () =>{
+        const [delPost, {}] = useMutation(DEL_POST, {
+            onCompleted:()=>{
+                console.log("Post deleted:" , postid)
+                navigate(-1)
+            }
+        })
+        delPost({variables : {postid:postid}})
+    }
+    
     return (
         <Grid container spacing={2} sx={{mt:1}}>
             <Grid item xs={12} >
-                <Typography variant="h3" component="div">
-                    {manufacturer} {model} {data.posts[0].title}
-                </Typography>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/`)}}>
+                        Home
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}`)}}>
+                        {manufacturer}
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${model}`)}}>
+                        {model}
+                    </Link>
+                    <Link underline="hover" sx={{cursor: "pointer"}} color="inherit" onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${model}/postid/${postid}`)}}>
+                        {postid}
+                    </Link>
+                </Breadcrumbs>
             </Grid>
-            {data && data?.posts?.map((item:PostElement)=>
-                <Grid item xs={12} >
-                    <Paper elevation={2}>
-                        <Typography variant="h6" component="div">
-                            Title: {item.title}
-                        </Typography>
-                        <Typography variant="h6" component="div">
-                            Description: {item.description}
-                        </Typography>
-                    </Paper>
-                </Grid>
-            )}
+            <Grid item xs={12} >
+                <Paper elevation={2}>
+                    <Typography variant="h6" component="div">
+                        Title: {data.post[0].title}
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                        Description: {data.post[0].description}
+                    </Typography>
+                    <Button color='info' size='medium' variant='contained' onClick={()=>setIsItOpen(true)}>Edit</Button>
+                    <Button color='error' size='medium' variant='contained' onClick={()=>deletePost()}>Delete</Button>
+                </Paper>
+            </Grid>
+            <EditModal title={data.post[0].title} description={data.post[0].description}  postid={postid} isItOpen={isItOpen} setIsItOpen={setIsItOpen} />
         </Grid>
     );
 }

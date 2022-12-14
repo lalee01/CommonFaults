@@ -1,34 +1,14 @@
 import { Formik , Field , Form } from 'formik'
 import { Card , Button , Grid , CardContent } from '@mui/material'
 import { TextField } from 'formik-mui'
-import { useMutation , gql } from '@apollo/client';
-import { PostElement } from '@src/components/pages/listelements'
+import { useMutation } from '@apollo/client'
+import { GET_POST } from './../apollo/querys';
+import { ADD_POST } from './../apollo/mutations'
 
 type Props = {
     manufacturer: string
     model: string
 }
-
-const GET_POST = gql`
-    query GetPost($manufacturer: String , $model:String) {
-        posts (manufacturer: $manufacturer , model: $model) {
-            id
-            model
-            manufacturer
-            title
-            description
-            postid
-        }
-    }
-`
-
-const ADD_POST = gql`
-    mutation AddPost($title:String , $manufacturer:String , $model:String , $description:String) {
-        addPost (title:$title , manufacturer:$manufacturer , model:$model , description:$description) {
-            title
-        }
-    }
-`;
 
 const AddPost = ({ manufacturer , model}:Props) => {
 
@@ -39,12 +19,15 @@ const AddPost = ({ manufacturer , model}:Props) => {
           ],
     },)
 
+  const username=localStorage.getItem('username')
+
   return ( 
     <Grid item xs={12}>
       <Formik initialValues={{title:"" ,manufacturer:manufacturer , model:model , description:""}} onSubmit={
         async (value, {setFieldError, setSubmitting , resetForm}) => {
             setSubmitting(true)
-            await submitPost({ variables: value })
+            const sendData = {...value , author: username}
+            await submitPost({ variables: sendData })
             setFieldError('title', error?.message);
             setSubmitting(false)
             resetForm()
