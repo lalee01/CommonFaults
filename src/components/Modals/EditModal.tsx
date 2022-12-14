@@ -22,7 +22,7 @@ const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalP
         ]
     })
     
-    const onClose = () =>setIsItOpen(false)
+    const onClose = () => setIsItOpen(false)
 
     return (
         <Dialog open={isItOpen} onClose={onClose} >

@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { Alert, Breadcrumbs, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
+import { useMutation, useQuery } from '@apollo/client';
+import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { PostElement } from '@src/components/pages/listelements'
 import AddPost from './addpost';
 import { GET_POST } from '../apollo/querys';
+import { DEL_POST } from '../apollo/mutations';
 
 const PostList = () => {
+    const username = localStorage.getItem('username')
 
     const { manufacturer = '' , model = ''} = useParams()
 
@@ -14,6 +16,17 @@ const PostList = () => {
     });
 
     const navigate = useNavigate()
+
+    const [delPost , {  }] = useMutation(DEL_POST , {
+        refetchQueries: [
+            {query: GET_POST},
+            'GetPost'  
+        ],
+    })
+
+    const deletePost = async (postid:String) =>{
+        await delPost({variables : {postid:postid}})
+    }
     
     if (loading) return <LinearProgress/>
     if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
@@ -43,10 +56,16 @@ const PostList = () => {
                                     Title: {item.title}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12} md={3}>
+                            <Grid item xs={12} md={5}>
                                 <Typography variant="h6" component="div">
                                 Description: {item.description}
                                 </Typography>
+                            </Grid>
+                            <Grid item xs={6} md={1}>
+                            {username === item.author ?
+                                <Button color='error' size='medium' variant='contained' fullWidth onClick={()=>deletePost(item.postid)}>Delete</Button>
+                                :null
+                            }
                             </Grid> 
                         </Grid>
                     </Paper>

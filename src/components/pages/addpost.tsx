@@ -10,6 +10,9 @@ type Props = {
     model: string
 }
 
+const linkRegexp = new RegExp('(?<=v[=]|be.)[aA-zZ , 0-9]{11}', "g")
+const linkConverting = (props : string) =>linkRegexp.exec(props)
+
 const AddPost = ({ manufacturer , model}:Props) => {
 
     const [submitPost, { data, loading, error }] = useMutation(ADD_POST , {
@@ -20,13 +23,13 @@ const AddPost = ({ manufacturer , model}:Props) => {
     },)
 
   const username=localStorage.getItem('username')
-
   return ( 
     <Grid item xs={12}>
-      <Formik initialValues={{title:"" ,manufacturer:manufacturer , model:model , description:""}} onSubmit={
+      <Formik initialValues={{title:"" ,manufacturer:manufacturer , model:model , description:"" , ytLink:""}} onSubmit={
         async (value, {setFieldError, setSubmitting , resetForm}) => {
             setSubmitting(true)
-            const sendData = {...value , author: username}
+            const link = linkConverting(value.ytLink)[0]
+            const sendData = {...value , author: username ,ytLink:link}
             await submitPost({ variables: sendData })
             setFieldError('title', error?.message);
             setSubmitting(false)
@@ -41,6 +44,9 @@ const AddPost = ({ manufacturer , model}:Props) => {
                 </Grid>
                 <Grid item xs={12} md={3} > 
                   <Field type="text" placeholder="Description" name="description" component={TextField} label="Description" fullWidth/>
+                </Grid>
+                <Grid item xs={12} md={3} > 
+                  <Field type="text" placeholder="Youtube link" name="ytLink" component={TextField} label="Youtube link" fullWidth/>
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <Button type="submit" variant="contained" fullWidth>Send</Button>
