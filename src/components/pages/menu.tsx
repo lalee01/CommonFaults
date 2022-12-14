@@ -6,6 +6,13 @@ function Menu() {
 
   const navigate = useNavigate()
   const {showModal} = useModals();
+  const token = localStorage.getItem('token');
+  console.log(token)
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    navigate('/')
+  }
 
   return (
     <Box sx={{ flexGrow: 1 , mb:10 }}>
@@ -16,11 +23,9 @@ function Menu() {
                 </Button>            
                 <Typography variant="h1" component="div" sx={{ flexGrow: 1 }} />
                 <Typography variant="h1" component="div" sx={{ flexGrow: 1 }} />
-                <Button color="inherit" onClick={() => {
-                  showModal(MODALS.LOGIN)}}>Login</Button>
-                <Button color="inherit" onClick={() => {
-                  showModal(MODALS.REG)}}>Regisztration</Button>
-                <Button color="inherit" >Logout</Button>
+                {!token ? <Button color="inherit" onClick={() => {showModal(MODALS.LOGIN)}}>Login</Button> : null}
+                {!token ? <Button color="inherit" onClick={() => {showModal(MODALS.REG)}}>Regisztration</Button> : null}
+                {token ? <Button color="inherit" onClick={logout}>Logout</Button> : null}
             </Toolbar>
         </AppBar>
     </Box>
