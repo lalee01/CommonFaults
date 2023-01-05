@@ -64,6 +64,7 @@ const typeDefs = gql`
         manufacturer:String
         author:String
         ytLink:String
+        date:String
     }
 
     type login {
@@ -163,10 +164,11 @@ const resolvers = {
 const server = new ApolloServer({ typeDefs, resolvers });
 
 server.start().then(()=> {
-    const PORT = 3002;
+    const PORT = 3000;
     const app = express();
     server.applyMiddleware({ app });
     app.use(cors(corsOptions));
+    app.listen(process.env.PORT||3000)
     
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

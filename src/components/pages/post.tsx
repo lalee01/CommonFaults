@@ -1,10 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import EditModal from '../Modals/EditModal';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
-import { GET_POST, ONE_POST } from '../apollo/querys';
-import { DEL_POST } from '../apollo/mutations';
+import { ONE_POST } from '../apollo/querys';
 
 const Post = () => {
 
@@ -19,6 +18,8 @@ const Post = () => {
     
     if (loading) return <LinearProgress/>
     if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
+
+    const time = () => new Date(data.post[0].date *1 ).toUTCString()
     
     return (
         <Grid container spacing={2} sx={{mt:1}}>
@@ -40,14 +41,22 @@ const Post = () => {
             </Grid>
             <Grid item xs={12} >
                 <Paper elevation={2}>
-                    <Typography variant="h6" component="div">
+                    <Typography variant="h3" component="div">
                         Title: {data.post[0].title}
                     </Typography>
+                    <Grid item xs={12} textAlign='center'>
+                    <iframe className="text-center my-4" width="800" height="400" allowFullScreen src={`https://www.youtube.com/embed/${data.post[0].ytLink}` } />
+                    </Grid>
                     <Typography variant="h6" component="div">
                         Description: {data.post[0].description}
                     </Typography>
                     <Button color='info' size='medium' variant='contained' onClick={()=>setIsItOpen(true)}>Edit</Button>
-
+                    <Typography variant="h6" component="div">
+                        Author: {data.post[0].author}
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                        Date: {time()}
+                    </Typography>
                 </Paper>
             </Grid>
             <EditModal title={data.post[0].title} description={data.post[0].description}  postid={postid} isItOpen={isItOpen} setIsItOpen={setIsItOpen} />
