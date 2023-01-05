@@ -10,6 +10,7 @@ function Menu() {
 
   const logout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('username')
     navigate('/')
   }
 

@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import EditModal from '../Modals/EditModal';
-import { useQuery , useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
-import { ONE_POST } from '../apollo/querys';
+import { GET_POST, ONE_POST } from '../apollo/querys';
 import { DEL_POST } from '../apollo/mutations';
 
 const Post = () => {
@@ -19,16 +19,6 @@ const Post = () => {
     
     if (loading) return <LinearProgress/>
     if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
-    
-    const deletePost = () =>{
-        const [delPost, {}] = useMutation(DEL_POST, {
-            onCompleted:()=>{
-                console.log("Post deleted:" , postid)
-                navigate(-1)
-            }
-        })
-        delPost({variables : {postid:postid}})
-    }
     
     return (
         <Grid container spacing={2} sx={{mt:1}}>
@@ -57,7 +47,7 @@ const Post = () => {
                         Description: {data.post[0].description}
                     </Typography>
                     <Button color='info' size='medium' variant='contained' onClick={()=>setIsItOpen(true)}>Edit</Button>
-                    <Button color='error' size='medium' variant='contained' onClick={()=>deletePost()}>Delete</Button>
+
                 </Paper>
             </Grid>
             <EditModal title={data.post[0].title} description={data.post[0].description}  postid={postid} isItOpen={isItOpen} setIsItOpen={setIsItOpen} />

@@ -5,4 +5,5 @@ export type PostElement = {
   title:String
   description:String
   postid:String
+  author:String
 }

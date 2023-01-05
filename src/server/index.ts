@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt'
 const saltRounds = 10;
 
 var corsOptions = {
-  origin: 'http://localhost',
+  origin: 'http://192.168.0.112',
   credentials: true
 };
 
@@ -24,6 +24,7 @@ type AddPostValues = {
   description:String
   postid:String
   author:String
+  ytLink:String
 }
 
 type EditPost = {
@@ -62,6 +63,7 @@ const typeDefs = gql`
         postid:String
         manufacturer:String
         author:String
+        ytLink:String
     }
 
     type login {
@@ -91,7 +93,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        addPost(title:String , manufacturer:String , model:String , description:String , author:String): [Post]
+        addPost(title:String , manufacturer:String , model:String , description:String , author:String , ytLink:String ): [Post]
         addModel(manufacturer:String , model:String): [Post]
         editPost(title:String , description:String , postid:String):[EditPost]
         deletePost(postid:String):[Post]
@@ -120,6 +122,7 @@ const resolvers = {
       }]
 
       const userInfo = await knex('users').select().modify((queryBuilder) =>  queryBuilder.where('username',args.username))
+      console.log(userInfo)
       const stringToHash = userInfo[0].username + userInfo[0].id
 
       if(bcrypt.compareSync(args.password, userInfo[0].password)){
@@ -134,12 +137,16 @@ const resolvers = {
     }
   },
   Mutation: {
-    addPost: async (_:any , args:AddPostValues)=> await knex('post').insert({...args , postid:uid(15)}),
+    addPost: async (_:any , args:AddPostValues)=> {
+      console.log(args)
+
+      return await knex('post').insert({...args , postid:uid(15)})
+    },
     addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args),
     editPost: async (_ :any , args:EditPost)=> {
       await knex('post').where('postid',args.postid).update(args) 
     },
-    deletePost: async (_ :any , args:{postid:String})=> await knex('post').where('postid',args.postid).del(),
+    deletePost: async (_ :any , args:{postid:String})=> {await knex('post').where('postid',args.postid).del()},
     reg:async (_ :any , args:registrate)=> {
       const hash = bcrypt.hashSync(args.password, saltRounds)
 

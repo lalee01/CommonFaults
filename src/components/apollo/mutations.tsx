@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const ADD_POST = gql`
-    mutation AddPost($title:String , $manufacturer:String , $model:String , $description:String ,$author:String) {
-        addPost (title:$title , manufacturer:$manufacturer , model:$model , description:$description ,author:$author) {
+    mutation AddPost($title:String , $manufacturer:String , $model:String , $description:String ,$author:String , $ytLink:String) {
+        addPost (title:$title , manufacturer:$manufacturer , model:$model , description:$description , author:$author ,ytLink:$ytLink) {
             title
         }
     }
