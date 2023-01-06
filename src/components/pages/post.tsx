@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import EditModal from '../Modals/EditModal';
 import { useQuery } from '@apollo/client';
 import { Alert, Breadcrumbs, Button, Grid, LinearProgress, Link, Paper, Typography } from '@mui/material';
 import { useState } from 'react';

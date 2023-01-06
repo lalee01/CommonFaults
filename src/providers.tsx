@@ -7,7 +7,7 @@ import { setContext } from '@apollo/client/link/context'
 const url = window.location.hostname
 
 const httpLink = createHttpLink({
-    uri: `http://${url}:3000/graphql`,
+    uri: `https://commonfaults-server.onrender.com:3000/graphql` ,  // `http://${url}:3000/graphql`,
     credentials: 'same-origin'
   });
   
