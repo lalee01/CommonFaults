@@ -59,7 +59,6 @@ const Post = () => {
                     </Typography>
                 </Paper>
             </Grid>
-            <EditModal title={data.post[0].title} description={data.post[0].description}  postid={postid} isItOpen={isItOpen} setIsItOpen={setIsItOpen} />
         </Grid>
     );
 }

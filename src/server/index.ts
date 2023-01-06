@@ -149,7 +149,7 @@ const resolvers = {
     },
     deletePost: async (_ :any , args:{postid:String})=> {await knex('post').where('postid',args.postid).del()},
     reg:async (_ :any , args:registrate)=> {
-      const hash = bcrypt.hashSync(args.password, saltRounds)
+      const hash = bcrypt.hashSync(args.password as string, saltRounds)
 
       const regData = {
         username:args.username,
@@ -168,7 +168,6 @@ server.start().then(()=> {
     const app = express();
     server.applyMiddleware({ app });
     app.use(cors(corsOptions));
-    app.listen(process.env.PORT||3000)
     
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
