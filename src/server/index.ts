@@ -8,8 +8,10 @@ import bcrypt from 'bcrypt'
 
 const saltRounds = 10;
 
+const url = process.env.URL_SERVER
+
 var corsOptions = {
-  origin: 'http://192.168.0.112',
+  origin: url,
   credentials: true
 };
 

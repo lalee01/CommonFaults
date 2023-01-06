@@ -5,9 +5,11 @@ import { ModalContextProvider} from './components/hooks/UseModal'
 import { setContext } from '@apollo/client/link/context'
 
 const url = window.location.hostname
+const serverURL = import.meta.env.VITE_APP_URL
+console.log(`${serverURL}/graphql`)
 
 const httpLink = createHttpLink({
-    uri: `https://commonfaults-server.onrender.com:3000/graphql` ,  // `http://${url}:3000/graphql`,
+    uri: `${serverURL}/graphql` ,  // `http://${url}:3000/graphql`,
     credentials: 'same-origin'
   });
   
