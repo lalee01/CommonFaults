@@ -10,7 +10,9 @@ type Props = {
     model: string
 }
 
-const linkRegexp = new RegExp('(?<=v[=]|be.)[aA-zZ , 0-9]{11}', "g")
+const username=localStorage.getItem('username')
+
+const linkRegexp = new RegExp('(v[=]|be[/]|v[=]|v[/])[aA-zZ , 0-9]{11}', "g")
 const linkConverting = (props : string) =>linkRegexp.exec(props) ?? []
 
 const AddPost = ({ manufacturer , model}:Props) => {
@@ -22,13 +24,12 @@ const AddPost = ({ manufacturer , model}:Props) => {
           ],
     },)
 
-  const username=localStorage.getItem('username')
   return ( 
     <Grid item xs={12}>
       <Formik initialValues={{title:"" ,manufacturer:manufacturer , model:model , description:"" , ytLink:""}} onSubmit={
         async (value, {setFieldError, setSubmitting , resetForm}) => {
             setSubmitting(true)
-            const link = linkConverting(value.ytLink)[0]
+            const link = linkConverting(value.ytLink)[0].slice(-11)
             const sendData = {...value , author: username ,ytLink:link}
             await submitPost({ variables: sendData })
             setFieldError('title', error?.message);

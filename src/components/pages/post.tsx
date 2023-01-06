@@ -44,7 +44,7 @@ const Post = () => {
                         Title: {data.post[0].title}
                     </Typography>
                     <Grid item xs={12} textAlign='center'>
-                    <iframe className="text-center my-4" width="800" height="400" allowFullScreen src={`https://www.youtube.com/embed/${data.post[0].ytLink}` } />
+                    <iframe className="text-center my-4" width="90%" height="500" allowFullScreen src={`https://www.youtube.com/embed/${data.post[0].ytLink}` } />
                     </Grid>
                     <Typography variant="h6" component="div">
                         Description: {data.post[0].description}

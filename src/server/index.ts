@@ -115,7 +115,7 @@ const resolvers = {
       }
     }),
     post: async (_:null,args:any) => await knex('post').select().where('postid', args.postid),
-    getModels: async (_:null,args:any) => await knex('models').select().where('manufacturer', args.manufacturer),
+    getModels: async (_:null,args:any) => await (await knex('models').select().where('manufacturer', args.manufacturer).orderBy('model','asc')),
     login: async (_:null , args:any) => {
 
       const postInfo = [{

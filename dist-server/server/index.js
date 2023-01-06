@@ -107,8 +107,9 @@ import { uid } from "uid";
 import cors from "cors";
 import bcrypt from "bcrypt";
 var saltRounds = 10;
+var url = process.env.URL_SERVER;
 var corsOptions = {
-    origin: "http://192.168.0.112",
+    origin: url,
     credentials: true
 };
 var knexConfig = {
@@ -178,10 +179,13 @@ var resolvers = {
                     while(1)switch(_ctx.prev = _ctx.next){
                         case 0:
                             _ctx.next = 2;
-                            return knex("models").select().where("manufacturer", args.manufacturer);
+                            return knex("models").select().where("manufacturer", args.manufacturer).orderBy("model", "asc");
                         case 2:
+                            _ctx.next = 4;
+                            return _ctx.sent;
+                        case 4:
                             return _ctx.abrupt("return", _ctx.sent);
-                        case 3:
+                        case 5:
                         case "end":
                             return _ctx.stop();
                     }
