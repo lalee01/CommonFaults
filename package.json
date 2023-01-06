@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "swc src/server -d dist-server",
-    "build-dev": "npm run build && nodemon --inspect dist/server/index.js",
+    "build-dev": "npm run build && nodemon --inspect dist-server/server/index.js",
     "dev": "nodemon --ext ts --exec \"npm run build-dev\"",
     "start": "npm run build && NODE_ENV=production node dist/index.js",
     "dev-vite": "vite",
