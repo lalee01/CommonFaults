@@ -4,7 +4,7 @@ import { Form, Formik, Field } from "formik";
 import { TextField } from 'formik-mui'
 import { REGISTRATE } from "../apollo/mutations";
 
-export default function RegModal({onClose}) {
+export default function RegModal({onClose}: {onClose: () => void}) {
 
     const [registrate, { data, loading, error }] = useMutation(REGISTRATE)
 

@@ -64,6 +64,7 @@ const typeDefs = gql`
         manufacturer:String
         author:String
         ytLink:String
+        date:String
     }
 
     type login {
@@ -148,7 +149,7 @@ const resolvers = {
     },
     deletePost: async (_ :any , args:{postid:String})=> {await knex('post').where('postid',args.postid).del()},
     reg:async (_ :any , args:registrate)=> {
-      const hash = bcrypt.hashSync(args.password, saltRounds)
+      const hash = bcrypt.hashSync(args.password as string, saltRounds)
 
       const regData = {
         username:args.username,
@@ -163,7 +164,7 @@ const resolvers = {
 const server = new ApolloServer({ typeDefs, resolvers });
 
 server.start().then(()=> {
-    const PORT = 3002;
+    const PORT = 3000;
     const app = express();
     server.applyMiddleware({ app });
     app.use(cors(corsOptions));

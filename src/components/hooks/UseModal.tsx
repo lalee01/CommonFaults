@@ -14,7 +14,7 @@ export const MODALS = {
     'EDIT': 'EDIT',
 };
 
-const ModalContext = React.createContext({currentModal: "", modalProps: {}, showModal: (input: string) => {},title:{}});
+const ModalContext = React.createContext({currentModal: "", modalProps: {}, showModal: (input: string) => {},title:"" as string});
 ModalContext.displayName = 'ModalContext';
 
 export function Modals() {
@@ -27,8 +27,6 @@ export function Modals() {
                         return <LoginModal onClose={onClose} {...context.modalProps}/>;
                     case MODALS.REG:
                         return <RegModal onClose={onClose} {...context.modalProps}/>;
-                    case MODALS.EDIT:
-                        return <EditModal onClose={onClose} {...context.modalProps}/>;
                     case MODALS.NONE:
                     default:
                         return null;
@@ -49,7 +47,7 @@ export function ModalContextProvider({children}:ProviderProps) {
         [setCurrentModal, setModalProps]
     );
     return (
-        <ModalContext.Provider value={{currentModal, showModal, modalProps}}>
+        <ModalContext.Provider value={{currentModal, showModal, modalProps,title:""}}>
             {children}
             <Modals/>
         </ModalContext.Provider>

@@ -11,7 +11,7 @@ type Props = {
 }
 
 const linkRegexp = new RegExp('(?<=v[=]|be.)[aA-zZ , 0-9]{11}', "g")
-const linkConverting = (props : string) =>linkRegexp.exec(props)
+const linkConverting = (props : string) =>linkRegexp.exec(props) ?? []
 
 const AddPost = ({ manufacturer , model}:Props) => {
 

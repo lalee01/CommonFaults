@@ -22,9 +22,8 @@ const App = () => {
     if (!token) {
         return <Navigate to="/"></Navigate>;
     }
-
     return children;
-}
+  }
 
   return (
     <Providers>

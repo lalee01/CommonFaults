@@ -10,10 +10,10 @@ type ModalProps = {
     description:string
     postid: string
     isItOpen : boolean
-    setIsItOpen: (isItOpen:boolean)=>boolean
+    onClose : {onClose:()=> void}
 }
 
-const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalProps)=> {
+const EditModal = ({onClose ,title , description , postid}:ModalProps)=> {
 
     const [editPost, { data, loading, error }] = useMutation(EDIT_POST, {
         refetchQueries: [
@@ -21,11 +21,9 @@ const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalP
             'Post'  
         ]
     })
-    
-    const onClose = () => setIsItOpen(false)
 
     return (
-        <Dialog open={isItOpen} onClose={onClose} >
+        <Dialog open={true}>
             <DialogTitle>Edit post</DialogTitle>
             <DialogContent>
                 <Formik initialValues={{title:title , description:description}}
@@ -35,7 +33,6 @@ const EditModal = ({title , description , postid , isItOpen, setIsItOpen}:ModalP
                         await editPost({ variables: editedValue })
                         setFieldError('description' , error?.message)
                         setSubmitting(loading)
-                        onClose()
                     }}>
                     <Form>
                         <Grid container spacing={2} sx={{mt:1}}>

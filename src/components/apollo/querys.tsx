@@ -32,6 +32,8 @@ export const ONE_POST = gql`
             description
             postid
             author
+            ytLink
+            date
         }
     }
 `

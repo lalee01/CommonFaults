@@ -4,14 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 import { ModalContextProvider} from './components/hooks/UseModal'
 import { setContext } from '@apollo/client/link/context'
 
+const url = window.location.hostname
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:3002/graphql',
+    uri: `http://${url}:3000/graphql`,
     credentials: 'same-origin'
   });
   
   const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('token');
+   const token = localStorage.getItem('token');
 
     return {
       headers: {
