@@ -15,41 +15,27 @@ function AddModel({manufacturer}:Props) {
         refetchQueries: [
             {query: GET_MODELS}, 
             'GetModels'  
-          ],
-        onCompleted() {
-            console.log("Beküldve")
-        }
-    },)
-
-
-    function validateModel(model:String) {
-        if (model === ''){
-            return 'There should be name!';
-        }
-        if (model.length > 20){
-            return 'Maximum length of the name should be 80 characters!';
-        }
-      }
+          ]
+    })
 
   return ( 
     <Formik initialValues={{model:"" , manufacturer:manufacturer}} onSubmit={
         async (value, {setFieldError, setSubmitting , resetForm}) => {
-            setSubmitting(true)
+            setSubmitting(loading)
             await submitPost({ variables: value })
             setFieldError('model', error?.message);
-            setSubmitting(false)
-            console.log(value)
+            setSubmitting(loading)
             resetForm()
         }}>
         <Form>
             <Card elevation={4}>
                 <CardContent>
                     <Grid textAlign="center" >
-                        <Field type="text" placeholder="Modell" name="model" component={TextField} label="Modell" fullWidth validate={validateModel}/>
+                        <Field type="text" placeholder="Modell" name="model" component={TextField} label="Modell" fullWidth />
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button type="submit" variant="contained" fullWidth >Add model</Button>
+                    <Button disabled={loading} type="submit" variant="contained" fullWidth >Add model</Button>
                 </CardActions>
             </Card>
         </Form>

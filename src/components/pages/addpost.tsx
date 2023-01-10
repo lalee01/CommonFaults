@@ -1,5 +1,5 @@
 import { Formik , Field , Form } from 'formik'
-import { Card , Button , Grid , CardContent } from '@mui/material'
+import { Card , Button , Grid , CardContent, LinearProgress, Alert } from '@mui/material'
 import { TextField } from 'formik-mui'
 import { useMutation } from '@apollo/client'
 import { GET_POST } from './../apollo/querys';
@@ -17,23 +17,23 @@ const linkConverting = (props : string) =>linkRegexp.exec(props) ?? []
 
 const AddPost = ({ manufacturer , model}:Props) => {
 
-    const [submitPost, { data, loading, error }] = useMutation(ADD_POST , {
-        refetchQueries: [
-            {query: GET_POST}, 
-            'GetPost'  
-          ],
-    },)
+  const [submitPost, { data, loading, error }] = useMutation(ADD_POST , {
+      refetchQueries: [
+          {query: GET_POST}, 
+          'GetPost'  
+        ],
+  },)
 
   return ( 
     <Grid item xs={12}>
       <Formik initialValues={{title:"" ,manufacturer:manufacturer , model:model , description:"" , ytLink:""}} onSubmit={
         async (value, {setFieldError, setSubmitting , resetForm}) => {
-            setSubmitting(true)
+            setSubmitting(loading)
             const link = linkConverting(value.ytLink)[0].slice(-11)
             const sendData = {...value , author: username ,ytLink:link}
             await submitPost({ variables: sendData })
-            setFieldError('title', error?.message);
-            setSubmitting(false)
+            setFieldError('title', error?.message )
+            setSubmitting(loading)
             resetForm()
         }}>
         <Form>
@@ -50,13 +50,14 @@ const AddPost = ({ manufacturer , model}:Props) => {
                   <Field type="text" placeholder="Youtube link" name="ytLink" component={TextField} label="Youtube link" fullWidth/>
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <Button type="submit" variant="contained" fullWidth>Send</Button>
+                  <Button disabled={loading} type="submit" variant="contained" fullWidth>Send</Button>
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
         </Form>
       </Formik>
+      {loading ? <LinearProgress/> : null}
     </Grid>
   );
 }

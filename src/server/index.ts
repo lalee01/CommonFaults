@@ -5,6 +5,7 @@ import "dotenv/config";
 import {uid} from 'uid'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
+import { renderPostgresConfig } from "./knexConfig.js";
 
 const saltRounds = 10;
 
@@ -41,20 +42,7 @@ type registrate = {
   rePassword:String
 }
 
-const knexConfig: KnexConfig = {
-  local: {
-    client: 'mysql',
-      connection: {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS, 
-        database: process.env.DB_DATABASE
-      }
-  }
-}
-
-const knex =Knex(knexConfig.local)
-console.log(knexConfig)
+const knex =Knex(renderPostgresConfig.local)
 
 const typeDefs = gql`
     type Post {

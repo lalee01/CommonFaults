@@ -17,7 +17,7 @@ const PostList = () => {
 
     const navigate = useNavigate()
 
-    const [delPost , {  }] = useMutation(DEL_POST , {
+    const [delPost , { }] = useMutation(DEL_POST , {
         refetchQueries: [
             {query: GET_POST},
             'GetPost'  
@@ -51,7 +51,7 @@ const PostList = () => {
                 <Grid item xs={12}>
                     <Paper elevation={2} sx={{cursor:'pointer',pb:1}} onClick={() => {navigate(`/manufacturer/${manufacturer}/model/${model}/postid/${item.postid}`)}}>
                         <Grid container spacing={1} sx={{pr:1 , pl:1}}>
-                            <Grid item xs={12} md={6} >
+                            <Grid item xs={12} md={6}>
                                 <Typography variant="h6" component="div">
                                     Title: {item.title}
                                 </Typography>
@@ -62,10 +62,10 @@ const PostList = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={6} md={1}>
-                            {username === item.author ?
-                                <Button color='error' size='medium' variant='contained' fullWidth onClick={()=>deletePost(item.postid)}>Delete</Button>
-                                :null
-                            }
+                                {username === item.author ?
+                                    <Button color='error' size='medium' variant='contained' fullWidth onClick={()=>deletePost(item.postid)}>Delete</Button>
+                                    :null
+                                }
                             </Grid> 
                         </Grid>
                     </Paper>
