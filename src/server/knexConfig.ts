@@ -50,7 +50,9 @@ export const renderPostgresConfig : KnexConfig= {
       user : process.env.PG_USERNAME,
       password : process.env.PG_PASS,
       database : process.env.PG_DB,
-      ssl: true
+      ssl: { 
+        rejectUnauthorized: false 
+      }
     },
     acquireConnectionTimeout: 1000000,
     pool: {
