@@ -18,6 +18,8 @@ const ModelList = () => {
     if (loading) return <LinearProgress/>
     if (error) return <Alert severity="error">{`Error! ${error.message}`}</Alert>
 
+    console.log(data)
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >

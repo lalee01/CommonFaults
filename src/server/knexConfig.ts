@@ -20,25 +20,16 @@ const defaults = {
     }
   };
 
-export const knexConfig: KnexConfig = {
-    local: {
-      client: 'mysql',
-        connection: {
-          host: process.env.DB_HOST,
-          user: process.env.DB_USER,
-          password: process.env.DB_PASSWORD,
-          database: process.env.DB_DATABASE
-        }
-    },
-    development: {
-        ...defaults,
-        debug: true,
-        useNullAsDefault: true
-    },
-
-    production: {
-        ...defaults
-    }
+export const msqlConfig: KnexConfig = {
+  local: {
+    client: 'mysql',
+      connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS, 
+        database: process.env.DB_DATABASE
+      }
+  }
 }
 
 export const renderPostgresConfig : KnexConfig= {

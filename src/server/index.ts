@@ -5,7 +5,7 @@ import "dotenv/config";
 import {uid} from 'uid'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
-import { renderPostgresConfig } from "./knexConfig.js";
+import { renderPostgresConfig , msqlConfig } from "./knexConfig.js";
 
 const saltRounds = 10;
 
@@ -103,7 +103,7 @@ const resolvers = {
       }
     }),
     post: async (_:null,args:any) => await knex('post').select().where('postid', args.postid),
-    getModels: async (_:null,args:any) => await (await knex('models').select().where('manufacturer', args.manufacturer).orderBy('model','asc')),
+    getModels: async (_:null,args:any) => await knex('models').select().where('manufacturer', args.manufacturer).orderBy('model','asc'),
     login: async (_:null , args:any) => {
 
       const postInfo = [{
@@ -123,7 +123,7 @@ const resolvers = {
         postInfo[0].id = userInfo[0].id
         postInfo[0].token = hash
       }
-        
+
       return postInfo
     }
   },
@@ -131,10 +131,10 @@ const resolvers = {
     addPost: async (_:any , args:AddPostValues)=> {
       console.log(args)
 
-      return await knex('post').insert({...args , postid:uid(15)})
+      await knex('post').insert({...args , postid:uid(15)})
     },
-    addModel: async (_:any , args:AddPostValues)=> await knex('models').insert(args),
-    editPost: async (_ :any , args:EditPost)=> {
+    addModel: async (_:any , args:AddPostValues)=> {await knex('models').insert(args)},
+    editPost: async (_:any , args:EditPost)=> {
       await knex('post').where('postid',args.postid).update(args) 
     },
     deletePost: async (_ :any , args:{postid:String})=> {await knex('post').where('postid',args.postid).del()},

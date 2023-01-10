@@ -170,11 +170,8 @@ var resolvers = {
                             _ctx.next = 2;
                             return knex("models").select().where("manufacturer", args.manufacturer).orderBy("model", "asc");
                         case 2:
-                            _ctx.next = 4;
-                            return _ctx.sent;
-                        case 4:
                             return _ctx.abrupt("return", _ctx.sent);
-                        case 5:
+                        case 3:
                         case "end":
                             return _ctx.stop();
                     }
@@ -235,8 +232,6 @@ var resolvers = {
                                 postid: uid(15)
                             }));
                         case 3:
-                            return _ctx.abrupt("return", _ctx.sent);
-                        case 4:
                         case "end":
                             return _ctx.stop();
                     }
@@ -254,8 +249,6 @@ var resolvers = {
                             _ctx.next = 2;
                             return knex("models").insert(args);
                         case 2:
-                            return _ctx.abrupt("return", _ctx.sent);
-                        case 3:
                         case "end":
                             return _ctx.stop();
                     }

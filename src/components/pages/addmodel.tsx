@@ -1,4 +1,4 @@
-import { Grid , Card , CardActions , CardContent , Button } from "@mui/material";
+import { Grid , Card , CardActions , CardContent , Button, LinearProgress, Alert } from "@mui/material";
 import { TextField } from "formik-mui"
 import { Formik , Field , Form} from "formik";
 import { useMutation } from '@apollo/client';
@@ -11,12 +11,14 @@ type Props = {
 
 function AddModel({manufacturer}:Props) {
 
-    const [submitPost, { data, loading, error }] = useMutation(ADD_MODEL , {
+    const [submitPost, { loading, error }] = useMutation(ADD_MODEL , {
         refetchQueries: [
             {query: GET_MODELS}, 
             'GetModels'  
           ]
     })
+
+    if (loading) return <LinearProgress/>
 
   return ( 
     <Formik initialValues={{model:"" , manufacturer:manufacturer}} onSubmit={
